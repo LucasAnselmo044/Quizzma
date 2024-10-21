@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-// import { signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
@@ -10,17 +10,18 @@ export default function Login() {
 
   return (
     <main className="h-screen flex justify-center items-center bg-blue-400 px-5">
-      <div className="flex flex-col items-center space-y-6">
+      <div className="flex flex-col items-center space-y-6 w-full max-w-sm">
         {/* Logo */}
         <Image
           src="/images/logo.png"
           alt="Logo do Quizzma"
-          width={530}
-          height={150}
+          width={300}
+          height={100}
+          priority
         />
 
         {/* Formulário de Login */}
-        <div className="bg-black p-8 rounded-3xl w-full max-w-md space-y-4">
+        <div className="bg-black p-8 rounded-3xl w-full space-y-4">
           <h1 className="text-center text-white text-2xl font-bold mb-6">Login</h1>
 
           {/* Email Input */}
@@ -30,6 +31,7 @@ export default function Login() {
               type="email"
               placeholder="Email"
               className="w-full pl-10 pr-4 py-2 bg-white rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -40,18 +42,20 @@ export default function Login() {
               type={showPassword ? 'text' : 'password'}
               placeholder="Senha"
               className="w-full pl-10 pr-10 py-2 bg-white rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
             <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               onClick={() => setShowPassword(!showPassword)}
+              aria-label="Toggle password visibility"
             >
               {showPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
             </button>
           </div>
 
           {/* Botão Fazer Login */}
-          <button className="w-full bg-blue-500 text-white py-2 rounded-lg mt-4 hover:bg-blue-600">
+          <button className="w-full bg-blue-500 text-white py-2 rounded-lg mt-4 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500">
             FAZER LOGIN
           </button>
 
@@ -60,7 +64,7 @@ export default function Login() {
           {/* Botão Login com Google */}
           <button
             className="flex items-center justify-center w-full bg-gray-200 text-black py-2 rounded-lg mt-2 hover:bg-gray-300"
-            // onClick={() => signIn('google')}
+            onClick={() => signIn('google')}
           >
             <Image
               src="/images/google-logo.png"
@@ -75,7 +79,7 @@ export default function Login() {
           {/* Botão Login com GitHub */}
           <button
             className="flex items-center justify-center w-full bg-gray-200 text-black py-2 rounded-lg mt-2 hover:bg-gray-300"
-            // onClick={() => signIn('github')}
+            onClick={() => signIn('github')}
           >
             <Image
               src="/images/github-logo.png"

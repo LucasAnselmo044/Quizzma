@@ -7,25 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String?
-  email     String    @unique
-  username  String    @unique
+  id            String          @id @default(cuid())
+  name          String?
   password  String
-  image     String?
-  role      String    @default("user")
-
+  username  String    @unique
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
   quizzes   Quiz[]
   results   Result[]
+
+  role      String    @default("user")
+
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
 }
 
 model Quiz {
   id          Int       @id @default(autoincrement())
   title       String
   description String
-  userId      Int
+  userId      String
   user        User      @relation(fields: [userId], references: [id])
   questions   Question[]
   
@@ -54,7 +99,7 @@ model Option {
 model Result {
   id          Int       @id @default(autoincrement())
   score       Int
-  userId      Int
+  userId      String
   user        User      @relation(fields: [userId], references: [id])
   quizId      Int
   quiz        Quiz      @relation(fields: [quizId], references: [id])

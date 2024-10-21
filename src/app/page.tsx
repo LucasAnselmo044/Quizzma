@@ -32,7 +32,7 @@ export default function Home() {
         <div className="flex justify-center w-full">
           <a
             className="mt-6 rounded-full border border-solid border-gray-300 dark:border-[#529DE3] transition-colors flex items-center justify-center hover:bg-gray-200 dark:hover:bg-[#529DE3] text-sm sm:text-base h-12 px-8"
-            href="/registro"
+            href="/register"
             target="_blank"
             rel="noopener noreferrer"
           >
