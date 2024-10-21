@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { EyeIcon, EyeSlashIcon, UserIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { Button } from '../components/button';
 
-export default function Registro() {
+export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -15,8 +16,9 @@ export default function Registro() {
                 <Image
                     src="/images/logo.png"
                     alt="Logo Quizzma"
-                    width={530} // Ajuste o tamanho conforme necessário
+                    width={630}
                     height={150}
+                    priority
                 />
             </div>
 
@@ -85,12 +87,13 @@ export default function Registro() {
 
                 {/* Link e Botão */}
                 <div className="text-center mt-6">
-                    <p className="text-white text-sm">
-                        Já tem uma conta? <a href="/login" className="text-blue-500 underline">Login</a>
-                    </p>
-                    <button className="w-full bg-blue-500 text-white py-2 rounded-lg mt-4 hover:bg-blue-600">
+                    <Button className="w-full">
                         CRIAR CONTA
-                    </button>
+                    </Button>
+
+                    <p className="text-white text-sm mt-4">
+                        Já tem uma conta? <a href="/signin" className="text-blue-500 underline">Login</a>
+                    </p>
                 </div>
             </div>
         </main>

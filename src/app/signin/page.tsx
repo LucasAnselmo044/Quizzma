@@ -5,8 +5,9 @@ import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
+import { Button } from '../components/button';
 
-export default function Login() {
+export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter ();
 
@@ -21,8 +22,8 @@ export default function Login() {
         <Image
           src="/images/logo.png"
           alt="Logo do Quizzma"
-          width={300}
-          height={100}
+          width={530}
+          height={150}
           priority
         />
 
@@ -61,9 +62,9 @@ export default function Login() {
           </div>
 
           {/* Botão Fazer Login */}
-          <button className="w-full bg-blue-500 text-white py-2 rounded-lg mt-4 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500">
-            FAZER LOGIN
-          </button>
+          <Button className='w-full'>
+            Fazer Login
+          </Button>
 
           <p className="text-center text-white mt-4">Ou</p>
 
@@ -100,7 +101,7 @@ export default function Login() {
           {/* Link para Cadastro */}
           <div className="text-center mt-6">
             <p className="text-white text-sm">
-              Não tem uma conta? <a href="/register" className="text-blue-500 underline">Criar Conta</a>
+              Não tem uma conta? <a href="/signup" className="text-blue-500 underline">Criar Conta</a>
             </p>
           </div>
         </div>
