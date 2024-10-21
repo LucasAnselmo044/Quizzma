@@ -1,12 +1,18 @@
 'use client';
 
 import Image from 'next/image';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter ();
+
+  const {status} = useSession() 
+
+  if (status == "authenticated") router.push("/dashboard")
 
   return (
     <main className="h-screen flex justify-center items-center bg-blue-400 px-5">
