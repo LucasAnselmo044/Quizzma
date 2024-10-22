@@ -1,6 +1,7 @@
 import Image from "next/image";
 import GitHub from "next-auth/providers/github";
 import Link from "next/link";
+import { Button } from "./components/button";
 
 export default function Home() {
   return (
@@ -35,18 +36,15 @@ export default function Home() {
 
         {/* Botão */}
         <div className="flex justify-center w-full">
-          <a
-            className="mt-6 rounded-full border border-solid border-gray-300 dark:border-[#529DE3] transition-colors flex items-center justify-center hover:bg-gray-200 dark:hover:bg-[#529DE3] text-sm sm:text-base h-12 px-8"
-            href="/signup"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Crie Sua Conta
+          <a href="/signup">
+            <Button>
+              Crie sua Conta
+            </Button>
           </a>
         </div>
         <div className="flex justify-center w-full">
           <p>Ou
-          <a href="/signin" className="text-blue-400"> Faça Login </a>
+          <a href="/signin" className="text-blue-400">  Login </a>
           </p> 
         </div>
       </main>
