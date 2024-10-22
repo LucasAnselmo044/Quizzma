@@ -1,4 +1,6 @@
 import Image from "next/image";
+import GitHub from "next-auth/providers/github";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -26,6 +28,9 @@ export default function Home() {
               Desigualdade de Gênero
             </span>
           </p>
+          <p className="text-gray-400 text-lg">
+            E melhor ainda, aprenda de forma dinâmica e sem enrolação, através dos Quizes interativos!
+          </p>
         </div>
 
         {/* Botão */}
@@ -41,15 +46,15 @@ export default function Home() {
         </div>
         <div className="flex justify-center w-full">
           <p>Já tem uma conta?
-          <a href="/signin"> Fazer Login </a>
+          <a href="/signin" className="text-blue-400"> Fazer Login </a>
           </p> 
         </div>
       </main>
 
       <footer className="flex gap-6 items-center justify-end">
-        <a href="https://github.com/LucasAnselmo044">
-          Sobre nós
-        </a>
+        <Link href={"https://github.com/LucasAnselmo044"} >
+        <Image src="/images/github-logo-white.png" alt="Github logo" width={50} height={50} className="mr-2"/>
+        </Link>
       </footer>
     </div>
   );

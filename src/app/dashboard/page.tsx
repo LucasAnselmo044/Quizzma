@@ -8,16 +8,15 @@ export default function DashBoard() {
     const {data: session, status} = useSession();
     const router = useRouter();
 
-    
     if (status === "unauthenticated") router.push("/login")
         
     return (
-        <main>
-            <div className='justify-center flex'>
+        <div className="grid min-h-screen p-8 sm:p-20 gap-16 items-center justify-items-center">
+            <main>                  
                 <Button>
                     Teste
                 </Button>
-            </div>
-        </main>
+            </main>
+        </div>
     );
 }
