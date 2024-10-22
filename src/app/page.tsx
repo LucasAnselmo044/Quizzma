@@ -19,16 +19,16 @@ export default function Home() {
 
         {/* Textos */}
         <div className="text-center">
-          <h1 className="mb-2 text-4xl sm:text-6xl text-white">
+          <h1 className="mb-5 text-4xl sm:text-6xl text-white">
             Conhecimento nunca é demais!
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-400 text-2xl">
             Aprenda mais sobre um dos principais problemas da sociedade:
             <span className="block text-blue-400 font-bold">
               Desigualdade de Gênero
             </span>
           </p>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-400 text-2xl">
             E melhor ainda, aprenda de forma dinâmica e sem enrolação, através dos Quizes interativos!
           </p>
         </div>
@@ -45,8 +45,8 @@ export default function Home() {
           </a>
         </div>
         <div className="flex justify-center w-full">
-          <p>Já tem uma conta?
-          <a href="/signin" className="text-blue-400"> Fazer Login </a>
+          <p>Ou
+          <a href="/signin" className="text-blue-400"> Faça Login </a>
           </p> 
         </div>
       </main>
