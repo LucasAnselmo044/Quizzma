@@ -10,7 +10,15 @@ export default function DashBoard() {
   const router = useRouter();
 
   // Redireciona para a página de login se o usuário não estiver autenticado
-  if (status === 'unauthenticated') router.push('/login');
+  if (status === 'unauthenticated') {
+    router.push('/login');
+    return null;
+  }
+
+  // Exibe uma mensagem de carregamento enquanto o estado da sessão é verificado
+  if (status === 'loading') {
+    return <p className="text-center text-white">Carregando...</p>;
+  }
 
   return (
     <div className="grid min-h-screen p-8 sm:p-20 gap-16 items-center justify-items-center bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900 animate-gradient">
@@ -22,17 +30,16 @@ export default function DashBoard() {
         {/* Exibe a imagem do usuário com borda animada mais fina ou um ícone padrão */}
         <div className="flex flex-col items-center space-y-6">
           <div className="p-4 rounded-full border-2 border-blue-500 bg-white shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-
             {session?.user?.image ? (
-                          <a href='/profile'>
-              <Image
-                src={session.user.image}
-                alt="Imagem do Usuário"
-                width={100}
-                height={100}
-                className="rounded-full"
-              />
-                            </a>
+              <a href="/profile">
+                <Image
+                  src={session.user.image}
+                  alt="Imagem do Usuário"
+                  width={100}
+                  height={100}
+                  className="rounded-full"
+                />
+              </a>
             ) : (
               <div className="bg-gray-200 p-4 rounded-full">
                 <svg
@@ -44,17 +51,24 @@ export default function DashBoard() {
                   <path d="M12 12c2.28 0 4.148-1.868 4.148-4.148S14.28 3.704 12 3.704s-4.148 1.868-4.148 4.148S9.72 12 12 12zM12 14.483c-3.14 0-9.352 1.558-9.352 4.697v1.898h18.704v-1.898c0-3.139-6.211-4.697-9.352-4.697z" />
                 </svg>
               </div>
-
             )}
           </div>
+
+          {/* Nome do usuário */}
           <p className="text-white text-2xl font-semibold">{session?.user?.name || 'Usuário'}</p>
 
           {/* Botões de ação */}
           <div className="space-y-4">
-            <Button className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+            <Button
+              className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+              onClick={() => router.push('/categories')}
+            >
               Escolher Categoria
             </Button>
-            <Button className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+            <Button
+              className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+              onClick={() => router.push('/quick-quiz')}
+            >
               Quiz Rápido
             </Button>
           </div>
