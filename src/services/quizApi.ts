@@ -1,19 +1,12 @@
 // services/quizApi.ts
 export async function fetchCategories() {
-    const response = await fetch('https://quizapi.io/api/v1/categories', {
-      headers: {
-        'X-Api-Key': 'MqPOo7LPeoMTGULgydi4hBM4PGZtAuXxTB00c50a',
-      },
-    });
-    return response.json();
+  try {
+    const response = await fetch('/api/categories');
+    const data = await response.json();
+    console.log('Categorias carregadas:', data); // Adicione este log
+    return data;
+  } catch (error) {
+    console.error('Erro ao buscar categorias:', error);
+    return [];
   }
-  
-  export async function fetchQuizByCategory(category: string) {
-    const response = await fetch(`https://quizapi.io/api/v1/questions?category=${category}`, {
-      headers: {
-        'X-Api-Key': 'MqPOo7LPeoMTGULgydi4hBM4PGZtAuXxTB00c50a',
-      },
-    });
-    return response.json();
-  }
-  
+}

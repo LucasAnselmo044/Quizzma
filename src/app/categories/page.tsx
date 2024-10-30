@@ -5,8 +5,15 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchCategories } from '../../services/quizApi';
 
+// Defina o tipo de categoria, incluindo quizId
+interface Category {
+  id: number;
+  name: string;
+  quizId: number; // Certifique-se de que esse campo existe na resposta
+}
+
 export default function CategoriasPage() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -23,11 +30,11 @@ export default function CategoriasPage() {
       <div className="grid gap-4">
         {categories.map((category) => (
           <button
-            key={category.id} // Usando o `id` da categoria como chave
-            onClick={() => router.push(`/quiz/${category.name}`)} // Usando `category.name` para definir a rota
+            key={category.id}
+            onClick={() => router.push(`/quiz/${category.quizId}`)} // Agora usando o quizId
             className="bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-lg"
           >
-            {category.name} {/* Renderizando apenas o nome da categoria */}
+            {category.name}
           </button>
         ))}
       </div>
