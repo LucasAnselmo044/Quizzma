@@ -33,6 +33,13 @@ export default function Home() {
             </span>
             e aprenda de forma dinâmica e divertida através de quizzes interativos!
           </p>
+
+          {/* Link para Sobre Nós */}
+          <p className="mt-4 text-sm">
+            <Link href="/about-us" className="text-white hover:underline">
+              Sobre Nós
+            </Link>
+          </p>
         </div>
 
         {/* Botão de Ação */}
@@ -45,7 +52,26 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="flex gap-6 items-center justify-end opacity-0 animate-fadeIn delay-600">
+      {/* Espaço para Dividir as Seções */}
+      <div className="w-full h-12"></div>
+
+      {/* Texto Informativo sobre Denúncias */}
+      <div className="w-full max-w-2xl mx-auto text-center text-white mt-12 opacity-0 animate-slideIn delay-800">
+        <h2 className="text-2xl font-bold mb-4">Atenção!</h2>
+        <p className="text-lg mb-4">
+          Se você ou alguém que você conhece está enfrentando situações de violência ou assédio,
+          não hesite em buscar ajuda. <span className="block text-xl font-bold">DENUNCIE!</span> A denúncia é um ato de coragem e pode salvar vidas.
+        </p>
+        <p className="text-lg font-semibold mb-2">
+          Ligue para o Disque 180
+        </p>
+        <p className="text-lg">
+          Este serviço é gratuito, sigiloso e funciona 24 horas por dia. Sua voz é importante!
+        </p>
+      </div>
+
+      {/* Footer com Logo do GitHub */}
+      <footer className="flex gap-6 items-center justify-center opacity-0 animate-fadeIn delay-600 mt-12">
         <Link href="https://github.com/LucasAnselmo044">
           <Image
             src="/images/github-logo-white.png"
@@ -56,7 +82,7 @@ export default function Home() {
           />
         </Link>
       </footer>
-      
+
       {/* Animações de Entrada */}
       <style jsx>{`
         .animate-fadeIn {

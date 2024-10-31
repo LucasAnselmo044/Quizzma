@@ -23,7 +23,7 @@ export default function CategoriasPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8 flex flex-col items-center text-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8 flex flex-col items-center justify-center text-white">
       <h1 className="text-4xl font-bold mb-8 text-center text-blue-200 shadow-lg">
         Escolha uma Categoria
       </h1>

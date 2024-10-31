@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/button';
 import Image from 'next/image';
@@ -27,7 +27,7 @@ export default function DashBoard() {
           Bem-Vindo ao <span className="text-blue-300">Quizzma!</span>
         </h1>
         <p className="text-gray-300 text-lg font-light max-w-lg mx-auto">
-          Desafie-se em quizzes interativos e aprenda enquanto joga!
+          Desafie-se em quizzes interativos sobre Desigualdade de Gênero e aprenda enquanto joga!
         </p>
 
         <div className="flex flex-col items-center space-y-6">
@@ -57,6 +57,11 @@ export default function DashBoard() {
           </div>
 
           <p className="text-white text-2xl font-semibold">{session?.user?.name || 'Usuário'}</p>
+
+          {/* Link de Logout com integração do signOut */}
+          <p className="text-blue-300 hover:underline cursor-pointer" onClick={() => signOut()}>
+            Sair
+          </p>
 
           <div className="space-y-4">
             <Button
