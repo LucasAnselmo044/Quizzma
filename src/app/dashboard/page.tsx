@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/button';
+import Navbar from '../components/Navbar';
 import Image from 'next/image';
 
 export default function DashBoard() {
@@ -11,7 +12,7 @@ export default function DashBoard() {
 
   // Redireciona para a página de login se o usuário não estiver autenticado
   if (status === 'unauthenticated') {
-    router.push('/login');
+    router.push('/signin');
     return null;
   }
 
@@ -21,8 +22,10 @@ export default function DashBoard() {
   }
 
   return (
-    <div className="grid min-h-screen p-8 sm:p-20 gap-16 items-center justify-items-center bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900 animate-gradient">
-      <main className="text-center space-y-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-blue-700 animate-gradient">
+      <Navbar user={session.user} />
+
+      <main className="grid p-8 sm:p-20 gap-16 items-center justify-items-center">
         <h1 className="text-white text-4xl font-extrabold mb-4 animate-pulse shadow-lg">
           Bem-Vindo ao <span className="text-blue-300">Quizzma!</span>
         </h1>

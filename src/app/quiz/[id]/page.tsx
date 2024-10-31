@@ -156,6 +156,12 @@ export default function QuizPage({ params }: { params: { id: string } }) {
           </div>
         </div>
       )}
+      <button
+        onClick={() => router.push('/dashboard')} // Ajuste o caminho conforme necessário
+        className="mt-8 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200"
+      >
+        Voltar
+      </button>
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchCategories } from '../../services/quizApi';
 
-// Defina o tipo de categoria, incluindo quizId
 interface Category {
   id: number;
   name: string;
@@ -39,6 +38,13 @@ export default function CategoriasPage() {
           </button>
         ))}
       </div>
+      {/* Botão de Voltar */}
+      <button
+        onClick={() => router.push('/dashboard')} // Ajuste o caminho conforme necessário
+        className="mt-8 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200"
+      >
+        Voltar
+      </button>
     </div>
   );
 }
