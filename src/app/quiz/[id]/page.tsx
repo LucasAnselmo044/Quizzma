@@ -15,10 +15,12 @@ export default function QuizPage({ params }: { params: { id: string } }) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [quizFinished, setQuizFinished] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState('bg-blue-900');
   const router = useRouter();
-  const quizId = parseInt(params.id); // Certifique-se de que estamos usando um número
+  const quizId = parseInt(params.id);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -47,18 +49,27 @@ export default function QuizPage({ params }: { params: { id: string } }) {
     if (isCorrect) {
       setCorrectAnswers((prev) => prev + 1);
       setFeedbackMessage('Parabéns, resposta correta!');
+      setBackgroundColor('bg-green-700');
+      setShowCorrectAnswer(null); // Não mostra resposta correta ao acertar
     } else {
-      setFeedbackMessage('Resposta incorreta! Tente a próxima.');
+      setFeedbackMessage('Resposta incorreta! A resposta correta é:');
+      setShowCorrectAnswer(
+        questions[currentQuestion].options.find((option) => option.isCorrect)?.text || ''
+      );
+      setBackgroundColor('bg-red-700');
     }
+
+    setTimeout(() => setBackgroundColor('bg-blue-900'), 1500); // Volta ao fundo original após 1,5s
   }
 
   function handleNextQuestion() {
-    if (selectedOption === null) return; // Impede de avançar sem responder
+    if (selectedOption === null) return;
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
       setSelectedOption(null);
       setFeedbackMessage('');
+      setShowCorrectAnswer(null);
     } else {
       setQuizFinished(true);
     }
@@ -69,65 +80,80 @@ export default function QuizPage({ params }: { params: { id: string } }) {
     setCorrectAnswers(0);
     setSelectedOption(null);
     setFeedbackMessage('');
+    setShowCorrectAnswer(null);
     setQuizFinished(false);
   }
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p className="text-center text-white">Carregando...</p>;
 
-  if (questions.length === 0) return <p>Sem perguntas disponíveis.</p>;
+  if (questions.length === 0) return <p className="text-center text-white">Sem perguntas disponíveis.</p>;
 
   return (
-    <div className="p-6 text-white">
+    <div className={`flex flex-col items-center justify-center min-h-screen ${backgroundColor} transition-colors duration-700 text-white p-6`}>
       {!quizFinished ? (
         <>
-          <h1 className="text-2xl mb-4">Pergunta: {questions[currentQuestion].text}</h1>
-          <div>
+          <h1 className="text-3xl font-bold mb-6 text-center">
+            Pergunta {currentQuestion + 1} de {questions.length}
+          </h1>
+          <p className="text-xl mb-4 text-center bg-black/50 p-4 rounded-lg shadow-md">
+            {questions[currentQuestion].text}
+          </p>
+          <div className="flex flex-col items-center gap-3 w-full max-w-md">
             {questions[currentQuestion].options.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleAnswer(option.id, option.isCorrect)}
-                className={`block my-2 py-2 px-4 rounded-lg ${
+                className={`w-full py-2 px-4 rounded-lg shadow-md transition-all duration-300 ${
                   selectedOption === option.id
                     ? option.isCorrect
-                      ? 'bg-green-500'
-                      : 'bg-red-500'
-                    : 'bg-blue-500'
+                      ? 'bg-green-500 text-white'
+                      : 'bg-red-500 text-white'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                 }`}
-                disabled={selectedOption !== null} // Desabilita os botões após uma resposta
+                disabled={selectedOption !== null}
               >
                 {option.text}
               </button>
             ))}
           </div>
-          {feedbackMessage && <p className="mt-4">{feedbackMessage}</p>}
+          {feedbackMessage && (
+            <p className="mt-6 text-lg font-semibold text-center text-yellow-300">{feedbackMessage}</p>
+          )}
+          {showCorrectAnswer && (
+            <p className="text-lg font-semibold text-center text-green-300 mt-2">
+              {showCorrectAnswer}
+            </p>
+          )}
           <button
             onClick={handleNextQuestion}
-            className="mt-4 py-2 px-4 bg-gray-700 hover:bg-gray-800 rounded"
-            disabled={selectedOption === null} // Apenas habilita o botão se uma resposta foi selecionada
+            className="mt-6 py-2 px-6 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg shadow-lg transition-all duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
+            disabled={selectedOption === null}
           >
             Próxima Pergunta
           </button>
         </>
       ) : (
-        <div>
-          <h1 className="text-2xl mb-4">Quiz Finalizado!</h1>
-          <p>
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Quiz Finalizado!</h1>
+          <p className="text-xl mb-4">
             Você acertou {correctAnswers} de {questions.length} perguntas.
             <br />
-            Sua pontuação: {(correctAnswers / questions.length) * 100}%
+            Sua pontuação: <span className="font-bold text-green-400">{((correctAnswers / questions.length) * 100).toFixed(2)}%</span>
           </p>
-          <button
-            onClick={() => router.push('/categories')}
-            className="mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded"
-          >
-            Voltar para Categorias
-          </button>
-          <button
-            onClick={resetQuiz}
-            className="mt-4 ml-2 py-2 px-4 bg-gray-700 hover:bg-gray-800 rounded"
-          >
-            Refazer Quiz
-          </button>
+          <div className="flex justify-center gap-4 mt-6">
+            <button
+              onClick={() => router.push('/categories')}
+              className="py-2 px-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200"
+            >
+              Voltar para Categorias
+            </button>
+            <button
+              onClick={resetQuiz}
+              className="py-2 px-6 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200"
+            >
+              Refazer Quiz
+            </button>
+          </div>
         </div>
       )}
     </div>

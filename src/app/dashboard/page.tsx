@@ -22,28 +22,30 @@ export default function DashBoard() {
 
   return (
     <div className="grid min-h-screen p-8 sm:p-20 gap-16 items-center justify-items-center bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900 animate-gradient">
-      <main className="text-center">
-        {/* Boas-vindas ao usuário */}
-        <h1 className="text-white text-4xl font-bold mb-2 animate-pulse">Bem-Vindo ao Quizzma!</h1>
-        <p className="text-gray-300 text-lg mb-8">Desafie-se em quizzes interativos e aprenda enquanto joga!</p>
+      <main className="text-center space-y-12">
+        <h1 className="text-white text-4xl font-extrabold mb-4 animate-pulse shadow-lg">
+          Bem-Vindo ao <span className="text-blue-300">Quizzma!</span>
+        </h1>
+        <p className="text-gray-300 text-lg font-light max-w-lg mx-auto">
+          Desafie-se em quizzes interativos e aprenda enquanto joga!
+        </p>
 
-        {/* Exibe a imagem do usuário com borda animada mais fina ou um ícone padrão */}
         <div className="flex flex-col items-center space-y-6">
-          <div className="p-4 rounded-full border-2 border-blue-500 bg-white shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div className="p-2 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-full border-4 border-transparent shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
             {session?.user?.image ? (
               <a href="/profile">
                 <Image
                   src={session.user.image}
                   alt="Imagem do Usuário"
-                  width={100}
-                  height={100}
+                  width={120}
+                  height={120}
                   className="rounded-full"
                 />
               </a>
             ) : (
               <div className="bg-gray-200 p-4 rounded-full">
                 <svg
-                  className="w-16 h-16 text-gray-400"
+                  className="w-20 h-20 text-gray-400"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -54,22 +56,14 @@ export default function DashBoard() {
             )}
           </div>
 
-          {/* Nome do usuário */}
           <p className="text-white text-2xl font-semibold">{session?.user?.name || 'Usuário'}</p>
 
-          {/* Botões de ação */}
           <div className="space-y-4">
             <Button
-              className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+              className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
               onClick={() => router.push('/categories')}
             >
               Escolher Categoria
-            </Button>
-            <Button
-              className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
-              onClick={() => router.push('/quick-quiz')}
-            >
-              Quiz Rápido
             </Button>
           </div>
         </div>
