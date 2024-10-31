@@ -3,12 +3,9 @@
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import { Button } from '../components/button';
 
 export default function SignIn() {
-  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { status } = useSession();
 
@@ -59,13 +56,6 @@ export default function SignIn() {
             />
             Fazer login com o GitHub
           </button>
-
-          {/* Link para Cadastro */}
-          <div className="text-center mt-4">
-            <p className="text-gray-600 text-sm">
-              Não tem uma conta? <a href="/signup" className="text-blue-600 underline">Criar Conta</a>
-            </p>
-          </div>
         </div>
       </div>
     </main>
