@@ -1,5 +1,4 @@
 import Image from "next/image";
-import GitHub from "next-auth/providers/github";
 import Link from "next/link";
 import { Button } from "./components/button";
 
