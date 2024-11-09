@@ -50,56 +50,65 @@ export default function Home() {
             </Button>
           </Link>
         </div>
+
+        {/* Nosso Impacto e Objetivo */}
+        <div className="w-full max-w-2xl mx-auto text-center text-white mt-12 opacity-0 animate-slideIn delay-600">
+          <h2 className="text-2xl font-bold mb-4">Nosso Impacto e Objetivo</h2>
+          <p className="text-lg mb-4">
+            O Quizzma foi criado com uma visão de futuro: estabelecer uma parceria com o governo 
+            para apoiar campanhas de conscientização sobre a desigualdade de gênero. Nosso objetivo é que, a cada cem quizzes completados, uma doação possa ser feita para iniciativas que promovam igualdade.
+          </p>
+          <p className="text-lg">
+            Junte-se a nós e ajude a tornar essa visão realidade. Com o seu apoio, podemos mostrar ao governo o impacto que nossa comunidade é capaz de criar!
+          </p>
+        </div>
+
+        {/* Texto Informativo sobre Denúncias */}
+        <div className="w-full max-w-2xl mx-auto text-center text-white mt-12 opacity-0 animate-slideIn delay-800">
+          <h2 className="text-2xl font-bold mb-4">Atenção!</h2>
+          <p className="text-lg mb-4">
+            Se você ou alguém que você conhece está enfrentando situações de violência ou assédio,
+            não hesite em buscar ajuda. <span className="block text-xl font-bold">DENUNCIE!</span> A denúncia é um ato de coragem e pode salvar vidas.
+          </p>
+          <p className="text-lg font-semibold mb-2">
+            Ligue para o Disque 180
+          </p>
+          <p className="text-lg">
+            Este serviço é gratuito, sigiloso e funciona 24 horas por dia. Sua voz é importante!
+          </p>
+        </div>
+
+        {/* Footer com Logo do GitHub */}
+        <footer className="flex gap-6 items-center justify-center opacity-0 animate-fadeIn delay-600 mt-12">
+          <Link href="https://github.com/LucasAnselmo044">
+            <Image
+              src="/images/github-logo-white.png"
+              alt="Github logo"
+              width={50}
+              height={50}
+              className="hover:opacity-80 transition-opacity"
+            />
+          </Link>
+        </footer>
+
+        {/* Animações de Entrada */}
+        <style jsx>{`
+          .animate-fadeIn {
+            animation: fadeIn 1s ease-in-out forwards;
+          }
+          .animate-slideIn {
+            animation: slideIn 1s ease-in-out forwards;
+          }
+          @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+          }
+          @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
       </main>
-
-      {/* Espaço para Dividir as Seções */}
-      <div className="w-full h-12"></div>
-
-      {/* Texto Informativo sobre Denúncias */}
-      <div className="w-full max-w-2xl mx-auto text-center text-white mt-12 opacity-0 animate-slideIn delay-800">
-        <h2 className="text-2xl font-bold mb-4">Atenção!</h2>
-        <p className="text-lg mb-4">
-          Se você ou alguém que você conhece está enfrentando situações de violência ou assédio,
-          não hesite em buscar ajuda. <span className="block text-xl font-bold">DENUNCIE!</span> A denúncia é um ato de coragem e pode salvar vidas.
-        </p>
-        <p className="text-lg font-semibold mb-2">
-          Ligue para o Disque 180
-        </p>
-        <p className="text-lg">
-          Este serviço é gratuito, sigiloso e funciona 24 horas por dia. Sua voz é importante!
-        </p>
-      </div>
-
-      {/* Footer com Logo do GitHub */}
-      <footer className="flex gap-6 items-center justify-center opacity-0 animate-fadeIn delay-600 mt-12">
-        <Link href="https://github.com/LucasAnselmo044">
-          <Image
-            src="/images/github-logo-white.png"
-            alt="Github logo"
-            width={50}
-            height={50}
-            className="hover:opacity-80 transition-opacity"
-          />
-        </Link>
-      </footer>
-
-      {/* Animações de Entrada */}
-      <style jsx>{`
-        .animate-fadeIn {
-          animation: fadeIn 1s ease-in-out forwards;
-        }
-        .animate-slideIn {
-          animation: slideIn 1s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-        @keyframes slideIn {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }
