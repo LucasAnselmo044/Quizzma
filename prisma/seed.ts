@@ -3,12 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Limpar o banco de dados na ordem correta para evitar erros de chave estrangeira
-  await prisma.result.deleteMany({});
+ {/* await prisma.result.deleteMany({});
   await prisma.option.deleteMany({});
   await prisma.question.deleteMany({});
   await prisma.quiz.deleteMany({});
-  await prisma.category.deleteMany({});
+  await prisma.category.deleteMany({}); */}
 
   console.log("Todas as categorias, quizzes, perguntas, opções e resultados deletados com sucesso!");
 
