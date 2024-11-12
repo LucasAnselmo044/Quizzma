@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { IoArrowBack } from 'react-icons/io5'; // Biblioteca de ícones
+import { IoArrowBack } from 'react-icons/io5';
 
 export default function Terms() {
   return (
@@ -57,7 +57,7 @@ export default function Terms() {
         </p>
 
         <p className="text-center mt-6 font-medium">
-          Ao clicar em "Concordo", você aceita nossos Termos e Condições e reconhece nossa política de coleta de dados.
+          Ao clicar em Concordo, você aceita nossos Termos e Condições e reconhece nossa política de coleta de dados.
         </p>
       </div>
     </motion.div>
