@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '../components/button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import NavBar from '../components/Navbar';
+import { motion } from 'framer-motion';
+import MobileNav from '../components/MobileNav';
+import DailyChallenge from '../components/DailyChallenge'; // Importa o componente
 
 export default function DashBoard() {
   const { data: session, status } = useSession();
@@ -37,51 +41,38 @@ export default function DashBoard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-blue-700 animate-gradient flex flex-col items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen bg-gradient-to-br from-blue-800 via-blue-700 to-blue-600 flex flex-col items-center justify-center"
+    >
+      <div className="xl:block hidden">
+        <NavBar />
+      </div>
+      <div className="xl:hidden text-white text-3xl p-4 absolute top-4 left-4 z-10">
+        <MobileNav />
+      </div>
+
       <main className="text-center p-6 sm:p-10">
-        <h1 className="text-white text-4xl font-extrabold mb-4 animate-pulse shadow-lg">
+        <motion.h1
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="text-white text-4xl font-extrabold mb-4 animate-pulse shadow-lg"
+        >
           Bem-Vindo ao <span className="text-blue-300">Quizzma!</span>
-        </h1>
+        </motion.h1>
         <p className="text-gray-300 text-lg font-light max-w-lg mx-auto mb-8">
           Desafie-se em quizzes interativos sobre Desigualdade de Gênero e aprenda enquanto joga!
         </p>
 
-        <div className="flex flex-col items-center space-y-6">
-          <div className="p-2 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-full border-4 border-transparent shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-            {session?.user?.image ? (
-              <a href="/profile">
-                <Image
-                  src={session.user.image}
-                  alt="Imagem do Usuário"
-                  width={120}
-                  height={120}
-                  className="rounded-full"
-                />
-              </a>
-            ) : (
-              <div className="bg-gray-200 p-4 rounded-full">
-                <svg
-                  className="w-20 h-20 text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 12c2.28 0 4.148-1.868 4.148-4.148S14.28 3.704 12 3.704s-4.148 1.868-4.148 4.148S9.72 12 12 12zM12 14.483c-3.14 0-9.352 1.558-9.352 4.697v1.898h18.704v-1.898c0-3.139-6.211-4.697-9.352-4.697z" />
-                </svg>
-              </div>
-            )}
-          </div>
+        {/* Adiciona o componente DailyChallenge aqui */}
+        <div className="mb-8">
+          <DailyChallenge />
+        </div>
 
-          <p className="text-white text-2xl font-semibold">{session?.user?.name || 'Usuário'}</p>
-          
-          {/* Exibe o nível do usuário abaixo da foto */}
-          <p className="text-blue-300 text-xl font-semibold mt-2">{userLevel}</p>
-
-          {/* Link de Logout */}
-          <p className="text-blue-300 hover:underline cursor-pointer" onClick={() => signOut()}>
-            Sair
-          </p>
-
+        <div className='flex flex-col justify-center items-center'>
           <div className="space-y-4">
             <Button
               className="w-64 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
@@ -89,16 +80,9 @@ export default function DashBoard() {
             >
               Escolher Categoria
             </Button>
-            {/* Botão para Histórico */}
-            <Button
-              className="w-64 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
-              onClick={() => router.push('/history')}
-            >
-              Ver Histórico
-            </Button>
           </div>
         </div>
       </main>
-    </div>
+    </motion.div>
   );
 }
