@@ -1,45 +1,29 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/button';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import NavBar from '../components/Navbar';
 import { motion } from 'framer-motion';
 import MobileNav from '../components/MobileNav';
-import DailyChallenge from '../components/DailyChallenge'; // Importa o componente
+import DailyChallenge from '../components/DailyChallenge';
+import { useEffect } from 'react';
 
 export default function DashBoard() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [userLevel, setUserLevel] = useState<string>('');
 
-  // Buscando o nível do usuário da API
   useEffect(() => {
-    const fetchUserLevel = async () => {
-      if (session?.user?.id) {
-        const response = await fetch('/api/user/quizzes'); // Chama a API que retorna o nível
-        const data = await response.json();
-        
-        if (!data.error) {
-          setUserLevel(data.level); // Define o nível do usuário
-        }
-      }
-    };
-
-    fetchUserLevel();
-  }, [session]);
-
-  if (status === 'unauthenticated') {
-    router.push('/signin');
-    return null;
-  }
+    if (status === 'unauthenticated') {
+      router.push('/signin');
+    }
+  }, [status, router]);
 
   if (status === 'loading') {
-    return <p className="text-center text-white">Carregando...</p>;
+    return <p>Carregando...</p>;
   }
-
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}

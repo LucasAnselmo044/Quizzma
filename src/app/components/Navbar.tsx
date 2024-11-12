@@ -7,7 +7,7 @@ export default function NavBar() {
   const { data: session } = useSession();
 
   return (
-    <div className="w-64 h-screen bg-blue-900 text-white flex flex-col justify-between p-6 fixed left-0 top-0">
+    <div className="w-64 h-screen bg-blue-800 text-white flex flex-col justify-between p-6 fixed left-0 top-0">
       {/* Foto e Nome do Usuário */}
       <div className="flex flex-col items-center mb-8">
         {/* Foto do usuário */}

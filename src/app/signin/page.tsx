@@ -4,14 +4,14 @@ import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 
 export default function SignIn() {
   const router = useRouter();
   const { status } = useSession();
-  const [isBlack, setIsBlack] = useState(false);
+  const [isBlack] = useState(false);
 
   if (status === "authenticated") router.push("/dashboard");
 
