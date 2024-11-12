@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 async function main() {
   // Defina as novas categorias que você quer adicionar
   const newCategories = [
-    { name: 'Maternidade e Direitos das Mulheres' },
-    { name: 'Igualdade de Oportunidades' },
-    { name: 'Tecnologia e Diversidade' },
+    { name: 'Desigualdade de Gênero e Saúde' },
+    { name: 'Mulheres e o Mercado Global' },
+    { name: 'Violência Doméstica e Gênero' },
   ];
 
   // Faz upsert das categorias
@@ -21,106 +21,160 @@ async function main() {
     })
   );
 
-  // Defina os novos quizzes com mais perguntas e opções de resposta, incluindo description
+  // Defina os novos quizzes com perguntas e opções de resposta, incluindo description
   const newQuizzes = [
     {
-      title: 'Quiz sobre Maternidade e Direitos das Mulheres',
-      description: 'Um quiz sobre os princípios da Maternidade e Direitos das Mulheres.',
-      categoryName: 'Maternidade e Direitos das Mulheres',
+      title: 'Quiz sobre Desigualdade de Gênero e Saúde',
+      description: 'Teste seu conhecimento sobre a desigualdade de gênero no acesso à saúde.',
+      categoryName: 'Desigualdade de Gênero e Saúde',
       questions: [
         {
-          text: 'Qual é o tempo de licença-maternidade garantido por lei no Brasil?',
+          text: 'Qual é a taxa de mortalidade materna no Brasil? ',
           options: [
-            { text: '90 dias', isCorrect: false },
-            { text: '120 dias', isCorrect: false },
-            { text: '180 dias', isCorrect: true },
-            { text: '360 dias', isCorrect: false },
+            { text: '15 por 100.000', isCorrect: false },
+            { text: '35 por 100.000', isCorrect: true },
+            { text: '50 por 100.000', isCorrect: false },
+            { text: '20 por 100.000', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é um exemplo de violação de direitos humanos?',
+          text: 'Quantas mulheres no Brasil têm acesso a cuidados pré-natais adequados?',
           options: [
-            { text: 'Liberdade de expressão', isCorrect: false },
-            { text: 'Discriminação racial', isCorrect: true },
-            { text: 'Direito ao voto', isCorrect: false },
-            { text: 'Liberdade de movimento', isCorrect: false },
+            { text: 'Apenas 50%', isCorrect: false },
+            { text: 'Apenas 70%', isCorrect: true },
+            { text: 'Apenas 30%', isCorrect: false },
+            { text: 'Quase 100%', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é a base para os direitos humanos?',
+          text: 'Qual é o impacto da violência doméstica na saúde das mulheres?',
           options: [
-            { text: 'A economia de um país', isCorrect: false },
-            { text: 'A dignidade humana', isCorrect: true },
-            { text: 'A religião dominante', isCorrect: false },
-            { text: 'A cultura local', isCorrect: false },
+            { text: 'Nenhum impacto significativo', isCorrect: false },
+            { text: 'Impacta o bem-estar emocional e físico', isCorrect: true },
+            { text: 'Afeta apenas as mulheres em áreas rurais', isCorrect: false },
+            { text: 'Impacta apenas mulheres idosas', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual a principal razão para a sub-representação feminina em cargos de liderança?',
+          options: [
+            { text: 'Falta de qualificação', isCorrect: false },
+            { text: 'Estereótipos de gênero', isCorrect: true },
+            { text: 'Falta de interesse', isCorrect: false },
+            { text: 'Oportunidades iguais', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Em que áreas as mulheres recebem salários mais baixos que os homens?',
+          options: [
+            { text: 'Saúde', isCorrect: false },
+            { text: 'Tecnologia', isCorrect: true },
+            { text: 'Engenharia', isCorrect: true },
+            { text: 'Educação', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual é a principal barreira para as mulheres no mercado de trabalho?',
+          options: [
+            { text: 'Baixa formação acadêmica', isCorrect: false },
+            { text: 'Falta de redes de apoio', isCorrect: true },
+            { text: 'Falta de experiência', isCorrect: false },
+            { text: 'Falta de interesse em trabalhar', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual é o impacto da licença maternidade na carreira das mulheres?',
+          options: [
+            { text: 'Nenhum impacto', isCorrect: false },
+            { text: 'Atraso na progressão da carreira', isCorrect: true },
+            { text: 'Aumento de salários', isCorrect: false },
+            { text: 'Aumento de promoções', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual é o principal desafio enfrentado pelas mulheres no mercado de tecnologia?',
+          options: [
+            { text: 'Falta de habilidades técnicas', isCorrect: false },
+            { text: 'Estereótipos de gênero', isCorrect: true },
+            { text: 'Baixos salários', isCorrect: false },
+            { text: 'Falta de motivação', isCorrect: false },
+          ],
+        },
+        {
+          text: 'O que é a "teia de vidro" no contexto das mulheres no mercado de trabalho?',
+          options: [
+            { text: 'Uma rede de apoio para as mulheres', isCorrect: false },
+            { text: 'O obstáculo invisível para ascensão das mulheres', isCorrect: true },
+            { text: 'Uma política pública para igualdade salarial', isCorrect: false },
+            { text: 'Aumento de mulheres em cargos de liderança', isCorrect: false },
           ],
         },
       ],
     },
     {
-      title: 'Quiz sobre Igualdade de Oportunidades',
-      description: 'Teste seu conhecimento sobre igualdade de oportunidades.',
-      categoryName: 'Igualdade de Oportunidades',
+      title: 'Quiz sobre Mulheres e o Mercado Global',
+      description: 'Teste seus conhecimentos sobre o papel das mulheres na economia global.',
+      categoryName: 'Mulheres e o Mercado Global',
       questions: [
         {
-          text: 'O que significa igualdade de oportunidades?',
+          text: 'Qual é a porcentagem de mulheres no setor de TI globalmente?',
           options: [
-            { text: 'Acesso igual a direitos e oportunidades', isCorrect: true },
-            { text: 'Favoritismo em contratações', isCorrect: false },
-            { text: 'Preferência para grupos dominantes', isCorrect: false },
-            { text: 'Oportunidades limitadas para minorias', isCorrect: false },
+            { text: '28%', isCorrect: false },
+            { text: '25%', isCorrect: false },
+            { text: '10%', isCorrect: true },
+            { text: '50%', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é um exemplo de desigualdade de oportunidades?',
+          text: 'Quantas mulheres ocupam cargos de liderança em grandes empresas?',
           options: [
-            { text: 'Promover com base no desempenho', isCorrect: false },
-            { text: 'Discriminação salarial de gênero', isCorrect: true },
-            { text: 'Igualdade de salários para todos', isCorrect: false },
-            { text: 'Respeito aos direitos trabalhistas', isCorrect: false },
+            { text: 'Apenas 5%', isCorrect: true },
+            { text: 'Apenas 10%', isCorrect: false },
+            { text: '20%', isCorrect: false },
+            { text: '30%', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é o objetivo da igualdade de oportunidades?',
+          text: 'Em quais países as mulheres têm maior acesso ao mercado de trabalho?',
           options: [
-            { text: 'Impedir a ascensão social', isCorrect: false },
-            { text: 'Garantir tratamento justo para todos', isCorrect: true },
-            { text: 'Dar preferência a um grupo específico', isCorrect: false },
-            { text: 'Reduzir o acesso à educação', isCorrect: false },
+            { text: 'Países da Europa Ocidental', isCorrect: true },
+            { text: 'Países da África Subsariana', isCorrect: false },
+            { text: 'Países da Ásia Central', isCorrect: false },
+            { text: 'Países da América Latina', isCorrect: false },
           ],
         },
       ],
     },
     {
-      title: 'Quiz sobre Tecnologia e Diversidade',
-      description: 'Explore a importância da diversidade na tecnologia.',
-      categoryName: 'Tecnologia e Diversidade',
+      title: 'Quiz sobre Violência Doméstica e Gênero',
+      description: 'Teste seus conhecimentos sobre a violência doméstica e suas implicações de gênero.',
+      categoryName: 'Violência Doméstica e Gênero',
       questions: [
         {
-          text: 'Por que a diversidade é importante na tecnologia?',
+          text: 'Qual é a principal causa da violência doméstica?',
           options: [
-            { text: 'Para aumentar o lucro das empresas', isCorrect: false },
-            { text: 'Para criar soluções mais inclusivas', isCorrect: true },
-            { text: 'Para garantir empregos apenas para homens', isCorrect: false },
-            { text: 'Para eliminar a inovação', isCorrect: false },
+            { text: 'Desigualdade de poder e controle', isCorrect: true },
+            { text: 'Problemas financeiros', isCorrect: false },
+            { text: 'Diferenças culturais', isCorrect: false },
+            { text: 'Comportamento agressivo', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é um exemplo de ação para promover a diversidade na tecnologia?',
+          text: 'Quantas mulheres são vítimas de violência doméstica por ano no Brasil?',
           options: [
-            { text: 'Contratar apenas homens brancos', isCorrect: false },
-            { text: 'Incentivar mulheres em STEM', isCorrect: true },
-            { text: 'Eliminar treinamentos sobre inclusão', isCorrect: false },
-            { text: 'Desigualdade salarial', isCorrect: false },
+            { text: 'Mais de 1 milhão', isCorrect: true },
+            { text: '500 mil', isCorrect: false },
+            { text: '2 milhões', isCorrect: false },
+            { text: '100 mil', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é um desafio para aumentar a diversidade na tecnologia?',
+          text: 'O que pode ser feito para combater a violência doméstica?',
           options: [
-            { text: 'Falta de candidatos qualificados de grupos sub-representados', isCorrect: true },
-            { text: 'Excesso de diversidade', isCorrect: false },
-            { text: 'Aumento de custos', isCorrect: false },
-            { text: 'Falta de interesse de todos os grupos', isCorrect: false },
+            { text: 'Criar mais leis punitivas', isCorrect: false },
+            { text: 'Educar a sociedade sobre igualdade de gênero', isCorrect: true },
+            { text: 'Reforçar a vigilância policial', isCorrect: false },
+            { text: 'Ignorar o problema', isCorrect: false },
           ],
         },
       ],

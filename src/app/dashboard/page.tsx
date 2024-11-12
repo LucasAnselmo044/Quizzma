@@ -4,29 +4,45 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/button';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function DashBoard() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [userLevel, setUserLevel] = useState<string>('');
 
-  // Redireciona para a página de login se o usuário não estiver autenticado
+  // Buscando o nível do usuário da API
+  useEffect(() => {
+    const fetchUserLevel = async () => {
+      if (session?.user?.id) {
+        const response = await fetch('/api/user/quizzes'); // Chama a API que retorna o nível
+        const data = await response.json();
+        
+        if (!data.error) {
+          setUserLevel(data.level); // Define o nível do usuário
+        }
+      }
+    };
+
+    fetchUserLevel();
+  }, [session]);
+
   if (status === 'unauthenticated') {
     router.push('/signin');
     return null;
   }
 
-  // Exibe uma mensagem de carregamento enquanto o estado da sessão é verificado
   if (status === 'loading') {
     return <p className="text-center text-white">Carregando...</p>;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-blue-700 animate-gradient">
-      <main className="grid p-8 sm:p-20 gap-16 items-center justify-items-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-blue-700 animate-gradient flex flex-col items-center justify-center">
+      <main className="text-center p-6 sm:p-10">
         <h1 className="text-white text-4xl font-extrabold mb-4 animate-pulse shadow-lg">
           Bem-Vindo ao <span className="text-blue-300">Quizzma!</span>
         </h1>
-        <p className="text-gray-300 text-lg font-light max-w-lg mx-auto">
+        <p className="text-gray-300 text-lg font-light max-w-lg mx-auto mb-8">
           Desafie-se em quizzes interativos sobre Desigualdade de Gênero e aprenda enquanto joga!
         </p>
 
@@ -57,8 +73,11 @@ export default function DashBoard() {
           </div>
 
           <p className="text-white text-2xl font-semibold">{session?.user?.name || 'Usuário'}</p>
+          
+          {/* Exibe o nível do usuário abaixo da foto */}
+          <p className="text-blue-300 text-xl font-semibold mt-2">{userLevel}</p>
 
-          {/* Link de Logout com integração do signOut */}
+          {/* Link de Logout */}
           <p className="text-blue-300 hover:underline cursor-pointer" onClick={() => signOut()}>
             Sair
           </p>
@@ -69,6 +88,13 @@ export default function DashBoard() {
               onClick={() => router.push('/categories')}
             >
               Escolher Categoria
+            </Button>
+            {/* Botão para Histórico */}
+            <Button
+              className="w-64 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+              onClick={() => router.push('/history')}
+            >
+              Ver Histórico
             </Button>
           </div>
         </div>
