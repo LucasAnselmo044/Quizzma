@@ -29,8 +29,8 @@ export default function Quizzes() {
         }
         const data = await res.json();
         setQuizzes(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError('');
       } finally {
         setLoading(false);
       }
