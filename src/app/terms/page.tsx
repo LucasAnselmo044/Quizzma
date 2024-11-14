@@ -57,7 +57,7 @@ export default function Terms() {
         </p>
 
         <p className="text-center mt-6 font-medium">
-          Ao clicar em Concordo, você aceita nossos Termos e Condições e reconhece nossa política de coleta de dados.
+          Ao clicar iniciar no Quizzma, você aceita nossos Termos e Condições e reconhece nossa política de coleta de dados.
         </p>
       </div>
     </motion.div>

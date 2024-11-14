@@ -16,24 +16,38 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-black overflow-hidden">
+    <div className="w-screen h-screen flex items-center justify-center bg-black overflow-hidden relative">
       <AnimatePresence>
         {!showContent && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            className="fixed inset-0 flex items-center justify-center"
-          >
-            <Image
-              src="/images/logo.png"
-              alt="Quizzma logo"
-              width={580}
-              height={38}
-              priority
-              className="filter brightness-110"
-            />
-          </motion.div>
+          <>
+            {/* Fundo borrado */}
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/images/fundo.png"
+                alt="Fundo borrado"
+                layout="fill"
+                objectFit="cover"
+                className="filter blur-md opacity-20"
+              />
+            </div>
+
+            {/* Logo animada */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+              className="fixed inset-0 flex items-center justify-center z-10"
+            >
+              <Image
+                src="/images/logo.png"
+                alt="Quizzma logo"
+                width={580}
+                height={38}
+                priority
+                className="filter brightness-110 animate-pulse"
+              />
+            </motion.div>
+          </>
         )}
 
         {showContent && (

@@ -1,9 +1,12 @@
-import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
-import GitHub from "next-auth/providers/github"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "./lib/prisma"
+import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "./lib/prisma";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getSession as nextAuthGetServerSession } from "next-auth/react";
 
+// Configuração do NextAuth
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -16,17 +19,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET, // Certifique-se que o segredo está sendo passado aqui
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
   session: {
-    strategy: "jwt",  // A chave correta agora é 'strategy'
+    strategy: "jwt",  // Define a estratégia para "jwt"
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
-        token.email = user.email
+        token.id = user.id;
+        token.email = user.email;
       }
-      return token
+      return token;
     },
   },
-})
+});
+
+// Função getSession para ser usada no lado do servidor (API routes)
+export const getSession = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    // Obtendo a sessão do NextAuth
+    const session = await nextAuthGetServerSession({ req, res });
+    return session;
+  } catch (error) {
+    console.error('Erro ao obter a sessão:', error);
+    return null; // Caso haja erro, retorna null
+  }
+};

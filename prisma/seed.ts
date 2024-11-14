@@ -2,21 +2,36 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
+
 async function main() {
-  // Defina as novas categorias que você quer adicionar
+  // Deletar as opções antes de atualizar as categorias
+  console.log('Deletando opções antigas associadas a questões...');
+  await prisma.option.deleteMany({});
+  
+  // Deletar todas as questões se necessário
+  console.log('Deletando questões antigas...');
+  await prisma.question.deleteMany({});
+  
+  // Deletar todas as categorias antigas
+  console.log('Deletando categorias antigas...');
+  await prisma.category.deleteMany({});
+  
+  // Definindo novas categorias
   const newCategories = [
-    { name: 'Desigualdade de Gênero e Saúde' },
-    { name: 'Mulheres e o Mercado Global' },
-    { name: 'Violência Doméstica e Gênero' },
+    { name: 'Desigualdade de Gênero no Mercado de Trabalho' },
+    { name: 'Papel das Mulheres na Política' },
+    { name: 'Acesso à Educação e Gênero' },
   ];
 
-  // Faz upsert das categorias
+  console.log('Todas as questões e categorias deletadas com sucesso!')
+
   await Promise.all(
     newCategories.map(async (category) => {
       await prisma.category.upsert({
         where: { name: category.name },
-        update: {}, // Se já existe, mantém os dados atuais
-        create: category, // Se não existe, cria a nova categoria
+        update: {}, 
+        create: category, 
       });
     })
   );
@@ -24,161 +39,296 @@ async function main() {
   // Defina os novos quizzes com perguntas e opções de resposta, incluindo description
   const newQuizzes = [
     {
-      title: 'Quiz sobre Desigualdade de Gênero e Saúde',
-      description: 'Teste seu conhecimento sobre a desigualdade de gênero no acesso à saúde.',
-      categoryName: 'Desigualdade de Gênero e Saúde',
+      title: 'Quiz sobre Desigualdade de Gênero no Mercado de Trabalho',
+      description: 'Teste seu conhecimento sobre as disparidades de gênero no mercado de trabalho.',
+      categoryName: 'Desigualdade de Gênero no Mercado de Trabalho',
       questions: [
         {
-          text: 'Qual é a taxa de mortalidade materna no Brasil? ',
+          text: 'Qual é a diferença salarial média entre homens e mulheres no Brasil?',
           options: [
-            { text: '15 por 100.000', isCorrect: false },
-            { text: '35 por 100.000', isCorrect: true },
-            { text: '50 por 100.000', isCorrect: false },
-            { text: '20 por 100.000', isCorrect: false },
+            { text: 'Não há diferença', isCorrect: false },
+            { text: '15%', isCorrect: false },
+            { text: '20%', isCorrect: false },
+            { text: '28%', isCorrect: true },
           ],
         },
         {
-          text: 'Quantas mulheres no Brasil têm acesso a cuidados pré-natais adequados?',
+          text: 'Qual a porcentagem de mulheres no mercado de tecnologia?',
           options: [
-            { text: 'Apenas 50%', isCorrect: false },
-            { text: 'Apenas 70%', isCorrect: true },
-            { text: 'Apenas 30%', isCorrect: false },
-            { text: 'Quase 100%', isCorrect: false },
+            { text: '15%', isCorrect: true },
+            { text: '30%', isCorrect: false },
+            { text: '50%', isCorrect: false },
+            { text: '10%', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é o impacto da violência doméstica na saúde das mulheres?',
-          options: [
-            { text: 'Nenhum impacto significativo', isCorrect: false },
-            { text: 'Impacta o bem-estar emocional e físico', isCorrect: true },
-            { text: 'Afeta apenas as mulheres em áreas rurais', isCorrect: false },
-            { text: 'Impacta apenas mulheres idosas', isCorrect: false },
-          ],
-        },
-        {
-          text: 'Qual a principal razão para a sub-representação feminina em cargos de liderança?',
-          options: [
-            { text: 'Falta de qualificação', isCorrect: false },
-            { text: 'Estereótipos de gênero', isCorrect: true },
-            { text: 'Falta de interesse', isCorrect: false },
-            { text: 'Oportunidades iguais', isCorrect: false },
-          ],
-        },
-        {
-          text: 'Em que áreas as mulheres recebem salários mais baixos que os homens?',
+          text: 'A discriminação salarial de gênero no Brasil é mais visível em quais áreas?',
           options: [
             { text: 'Saúde', isCorrect: false },
-            { text: 'Tecnologia', isCorrect: true },
-            { text: 'Engenharia', isCorrect: true },
+            { text: 'Tecnologia e Engenharia', isCorrect: true },
             { text: 'Educação', isCorrect: false },
+            { text: 'Administração', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é a principal barreira para as mulheres no mercado de trabalho?',
+          text: 'Qual o percentual de mulheres em cargos de liderança no Brasil?',
           options: [
-            { text: 'Baixa formação acadêmica', isCorrect: false },
-            { text: 'Falta de redes de apoio', isCorrect: true },
-            { text: 'Falta de experiência', isCorrect: false },
-            { text: 'Falta de interesse em trabalhar', isCorrect: false },
+            { text: '40%', isCorrect: false },
+            { text: '20%', isCorrect: true },
+            { text: '60%', isCorrect: false },
+            { text: '10%', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é o impacto da licença maternidade na carreira das mulheres?',
+          text: 'Qual é um dos principais fatores para a menor presença de mulheres em cargos de chefia?',
           options: [
-            { text: 'Nenhum impacto', isCorrect: false },
-            { text: 'Atraso na progressão da carreira', isCorrect: true },
-            { text: 'Aumento de salários', isCorrect: false },
-            { text: 'Aumento de promoções', isCorrect: false },
+            { text: 'Falta de qualificação', isCorrect: false },
+            { text: 'Menor confiança das mulheres', isCorrect: false },
+            { text: 'Discriminação e estereótipos', isCorrect: true },
+            { text: 'Escolhas pessoais', isCorrect: false },
           ],
         },
         {
-          text: 'Qual é o principal desafio enfrentado pelas mulheres no mercado de tecnologia?',
+          text: 'Qual é a porcentagem aproximada de mulheres nas áreas de exatas no Brasil?',
           options: [
-            { text: 'Falta de habilidades técnicas', isCorrect: false },
-            { text: 'Estereótipos de gênero', isCorrect: true },
-            { text: 'Baixos salários', isCorrect: false },
-            { text: 'Falta de motivação', isCorrect: false },
+            { text: '13%', isCorrect: true },
+            { text: '30%', isCorrect: false },
+            { text: '50%', isCorrect: false },
+            { text: '70%', isCorrect: false },
           ],
         },
         {
-          text: 'O que é a "teia de vidro" no contexto das mulheres no mercado de trabalho?',
+          text: 'A licença-maternidade pode impactar a desigualdade salarial de gênero porque:',
           options: [
-            { text: 'Uma rede de apoio para as mulheres', isCorrect: false },
-            { text: 'O obstáculo invisível para ascensão das mulheres', isCorrect: true },
-            { text: 'Uma política pública para igualdade salarial', isCorrect: false },
-            { text: 'Aumento de mulheres em cargos de liderança', isCorrect: false },
+            { text: 'Aumenta o tempo das mulheres fora do mercado', isCorrect: true },
+            { text: 'Os empregadores preferem contratar homens', isCorrect: false },
+            { text: 'As mulheres voltam com mais experiência', isCorrect: false },
+            { text: 'Afeta somente mulheres', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual medida pode ajudar a reduzir a desigualdade de gênero no mercado?',
+          options: [
+            { text: 'Foco exclusivo em qualificação', isCorrect: false },
+            { text: 'Divulgação de dados salariais por empresas', isCorrect: true },
+            { text: 'Contratar mais homens', isCorrect: false },
+            { text: 'Incentivar empregos femininos apenas em áreas tradicionais', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Mulheres são mais afetadas por desigualdade de gênero em ambientes de trabalho quando:',
+          options: [
+            { text: 'Têm menos tempo de experiência', isCorrect: false },
+            { text: 'São mães', isCorrect: true },
+            { text: 'Não têm acesso a transporte', isCorrect: false },
+            { text: 'Moram longe da empresa', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual política tem o maior potencial para diminuir a diferença salarial entre homens e mulheres?',
+          options: [
+            { text: 'Promoção de cargos apenas por tempo de trabalho', isCorrect: false },
+            { text: 'Maior transparência nos salários', isCorrect: true },
+            { text: 'Aumento de carga horária', isCorrect: false },
+            { text: 'Permitir menos horas para mulheres', isCorrect: false },
           ],
         },
       ],
-    },
+    },  
     {
-      title: 'Quiz sobre Mulheres e o Mercado Global',
-      description: 'Teste seus conhecimentos sobre o papel das mulheres na economia global.',
-      categoryName: 'Mulheres e o Mercado Global',
+      title: 'Quiz sobre Papel das Mulheres na Política',
+      description: 'Teste seus conhecimentos sobre a participação das mulheres na política.',
+      categoryName: 'Papel das Mulheres na Política',
       questions: [
         {
-          text: 'Qual é a porcentagem de mulheres no setor de TI globalmente?',
+          text: 'Qual foi a primeira mulher eleita presidente no Brasil?',
           options: [
-            { text: '28%', isCorrect: false },
-            { text: '25%', isCorrect: false },
-            { text: '10%', isCorrect: true },
-            { text: '50%', isCorrect: false },
+            { text: 'Dilma Rousseff', isCorrect: true },
+            { text: 'Marina Silva', isCorrect: false },
+            { text: 'Carmen Lúcia', isCorrect: false },
+            { text: 'Luiza Erundina', isCorrect: false },
           ],
         },
         {
-          text: 'Quantas mulheres ocupam cargos de liderança em grandes empresas?',
+          text: 'Em qual país as mulheres conquistaram o direito de votar pela primeira vez?',
           options: [
-            { text: 'Apenas 5%', isCorrect: true },
-            { text: 'Apenas 10%', isCorrect: false },
-            { text: '20%', isCorrect: false },
+            { text: 'Brasil', isCorrect: false },
+            { text: 'Nova Zelândia', isCorrect: true },
+            { text: 'Estados Unidos', isCorrect: false },
+            { text: 'França', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual a porcentagem de mulheres no Congresso Nacional do Brasil?',
+          options: [
+            { text: '5%', isCorrect: false },
+            { text: '20%', isCorrect: true },
+            { text: '50%', isCorrect: false },
             { text: '30%', isCorrect: false },
           ],
         },
         {
-          text: 'Em quais países as mulheres têm maior acesso ao mercado de trabalho?',
+          text: 'Qual país teve a primeira mulher eleita para o cargo de primeira-ministra?',
           options: [
-            { text: 'Países da Europa Ocidental', isCorrect: true },
-            { text: 'Países da África Subsariana', isCorrect: false },
-            { text: 'Países da Ásia Central', isCorrect: false },
-            { text: 'Países da América Latina', isCorrect: false },
+            { text: 'Índia', isCorrect: false },
+            { text: 'Reino Unido', isCorrect: true },
+            { text: 'Alemanha', isCorrect: false },
+            { text: 'Itália', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Quem foi a primeira mulher a ocupar um cargo político no Brasil?',
+          options: [
+            { text: 'Carlota Pereira de Queirós', isCorrect: true },
+            { text: 'Dilma Rousseff', isCorrect: false },
+            { text: 'Luiza Erundina', isCorrect: false },
+            { text: 'Marta Suplicy', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual a porcentagem aproximada de mulheres no Parlamento Europeu?',
+          options: [
+            { text: '25%', isCorrect: false },
+            { text: '39%', isCorrect: true },
+            { text: '45%', isCorrect: false },
+            { text: '60%', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Em qual década as mulheres brasileiras conquistaram o direito ao voto?',
+          options: [
+            { text: '1920', isCorrect: false },
+            { text: '1930', isCorrect: true },
+            { text: '1940', isCorrect: false },
+            { text: '1950', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Quem foi a primeira mulher negra eleita vereadora no Brasil?',
+          options: [
+            { text: 'Tereza de Benguela', isCorrect: false },
+            { text: 'Marielle Franco', isCorrect: true },
+            { text: 'Sueli Carneiro', isCorrect: false },
+            { text: 'Dandara dos Palmares', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual país da América Latina foi o primeiro a eleger uma mulher presidente?',
+          options: [
+            { text: 'Chile', isCorrect: true },
+            { text: 'Brasil', isCorrect: false },
+            { text: 'Argentina', isCorrect: false },
+            { text: 'Colômbia', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual é o objetivo das cotas de gênero na política?',
+          options: [
+            { text: 'Restringir o número de candidaturas femininas', isCorrect: false },
+            { text: 'Aumentar a participação feminina na política', isCorrect: true },
+            { text: 'Exigir campanhas financiadas para mulheres', isCorrect: false },
+            { text: 'Impedir a participação de homens em certos cargos', isCorrect: false },
           ],
         },
       ],
-    },
+    },    
     {
-      title: 'Quiz sobre Violência Doméstica e Gênero',
-      description: 'Teste seus conhecimentos sobre a violência doméstica e suas implicações de gênero.',
-      categoryName: 'Violência Doméstica e Gênero',
+      title: 'Quiz sobre Acesso à Educação e Gênero',
+      description: 'Teste seu conhecimento sobre as desigualdades de gênero no acesso à educação.',
+      categoryName: 'Acesso à Educação e Gênero',
       questions: [
         {
-          text: 'Qual é a principal causa da violência doméstica?',
+          text: 'Em quais áreas as mulheres têm menos acesso no ensino superior?',
           options: [
-            { text: 'Desigualdade de poder e controle', isCorrect: true },
-            { text: 'Problemas financeiros', isCorrect: false },
-            { text: 'Diferenças culturais', isCorrect: false },
-            { text: 'Comportamento agressivo', isCorrect: false },
+            { text: 'Medicina', isCorrect: false },
+            { text: 'Engenharia e Tecnologia', isCorrect: true },
+            { text: 'Administração', isCorrect: false },
+            { text: 'Direito', isCorrect: false },
           ],
         },
         {
-          text: 'Quantas mulheres são vítimas de violência doméstica por ano no Brasil?',
+          text: 'Qual é a taxa de evasão escolar entre meninas no ensino médio no Brasil?',
           options: [
-            { text: 'Mais de 1 milhão', isCorrect: true },
-            { text: '500 mil', isCorrect: false },
-            { text: '2 milhões', isCorrect: false },
-            { text: '100 mil', isCorrect: false },
+            { text: 'Menos de 10%', isCorrect: false },
+            { text: 'Entre 20% e 30%', isCorrect: true },
+            { text: 'Mais de 50%', isCorrect: false },
+            { text: 'Não há evasão', isCorrect: false },
           ],
         },
         {
-          text: 'O que pode ser feito para combater a violência doméstica?',
+          text: 'Qual é a principal barreira para a educação das meninas em áreas rurais no Brasil?',
           options: [
-            { text: 'Criar mais leis punitivas', isCorrect: false },
-            { text: 'Educar a sociedade sobre igualdade de gênero', isCorrect: true },
-            { text: 'Reforçar a vigilância policial', isCorrect: false },
-            { text: 'Ignorar o problema', isCorrect: false },
+            { text: 'Falta de escolas', isCorrect: false },
+            { text: 'Falta de transporte escolar', isCorrect: false },
+            { text: 'Desigualdade de gênero', isCorrect: true },
+            { text: 'Falta de interesse das meninas', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual continente tem a maior taxa de analfabetismo entre meninas?',
+          options: [
+            { text: 'Europa', isCorrect: false },
+            { text: 'América do Sul', isCorrect: false },
+            { text: 'África', isCorrect: true },
+            { text: 'Ásia', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual é um dos principais fatores que dificultam o acesso das meninas à educação em países em desenvolvimento?',
+          options: [
+            { text: 'Excesso de escolas', isCorrect: false },
+            { text: 'Desigualdade de gênero', isCorrect: true },
+            { text: 'Distribuição gratuita de material escolar', isCorrect: false },
+            { text: 'Baixa taxa de natalidade', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual porcentagem de mulheres em comparação aos homens termina o ensino superior no Brasil?',
+          options: [
+            { text: '20% menos', isCorrect: false },
+            { text: 'Proporção semelhante', isCorrect: true },
+            { text: '50% menos', isCorrect: false },
+            { text: '10% menos', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Em média, em quantos anos a educação das mulheres é interrompida devido a casamento infantil em alguns países?',
+          options: [
+            { text: '2 anos', isCorrect: true },
+            { text: 'Nenhum', isCorrect: false },
+            { text: '5 anos', isCorrect: false },
+            { text: '10 anos', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual programa global visa promover a educação das meninas e mulheres?',
+          options: [
+            { text: 'UNESCO Girls', isCorrect: false },
+            { text: 'ONU Mulheres', isCorrect: true },
+            { text: 'Educação para Todos', isCorrect: false },
+            { text: 'UNICEF Meninas', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual fator cultural ainda impacta negativamente o acesso das meninas à educação?',
+          options: [
+            { text: 'Preferência por atividades extracurriculares', isCorrect: false },
+            { text: 'Preferência pela educação dos meninos', isCorrect: true },
+            { text: 'Preferência por escolas privadas', isCorrect: false },
+            { text: 'Preferência por disciplinas artísticas', isCorrect: false },
+          ],
+        },
+        {
+          text: 'Qual medida pode aumentar o acesso das meninas à educação em regiões de baixa renda?',
+          options: [
+            { text: 'Aumentar taxas escolares', isCorrect: false },
+            { text: 'Fornecer bolsas de estudo', isCorrect: true },
+            { text: 'Reduzir a quantidade de professores', isCorrect: false },
+            { text: 'Estabelecer ensino apenas online', isCorrect: false },
           ],
         },
       ],
-    },
+    },    
   ];
 
   // Insere ou atualiza os novos quizzes com as perguntas e opções adicionais
@@ -244,4 +394,4 @@ main()
     console.error(e);
     await prisma.$disconnect();
     process.exit(1);
-  });
+  });

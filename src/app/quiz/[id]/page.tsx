@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 type Question = {
   id: number;
@@ -50,7 +52,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
       setCorrectAnswers((prev) => prev + 1);
       setFeedbackMessage('Parabéns, resposta correta!');
       setBackgroundColor('bg-green-700');
-      setShowCorrectAnswer(null); // Não mostra resposta correta ao acertar
+      setShowCorrectAnswer(null);
     } else {
       setFeedbackMessage('Resposta incorreta! A resposta correta é:');
       setShowCorrectAnswer(
@@ -59,7 +61,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
       setBackgroundColor('bg-red-700');
     }
 
-    setTimeout(() => setBackgroundColor('bg-blue-900'), 1500); // Volta ao fundo original após 1,5s
+    setTimeout(() => setBackgroundColor('bg-blue-900'), 1500);
   }
 
   function handleNextQuestion() {
@@ -72,6 +74,32 @@ export default function QuizPage({ params }: { params: { id: string } }) {
       setShowCorrectAnswer(null);
     } else {
       setQuizFinished(true);
+      saveResult();
+    }
+  }
+
+  async function saveResult() {
+    try {
+      const score = (correctAnswers / questions.length) * 100;
+
+      const response = await fetch('/api/quizzes/completedQuizzes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quizId,
+          score,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Resultado salvo com sucesso!');
+      } else {
+        console.error('Erro ao salvar o resultado');
+      }
+    } catch (error) {
+      console.error('Erro ao chamar a API:', error);
     }
   }
 
@@ -84,7 +112,35 @@ export default function QuizPage({ params }: { params: { id: string } }) {
     setQuizFinished(false);
   }
 
-  if (loading) return <p className="text-center text-white">Carregando...</p>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-black relative">
+        <Image
+          src="/images/fundo.png"
+          alt="Fundo Quizzma"
+          layout="fill"
+          className="absolute object-cover opacity-20 blur-lg"
+        />
+        <motion.div
+          className="z-10 text-center flex flex-col items-center"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1, ease: 'easeInOut', repeat: Infinity }}
+        >
+          <Image
+            src="/images/logo.png"
+            alt="Logo Quizzma"
+            width={200}
+            height={200}
+            className="animate-pulse"
+          />
+          <p className="text-white mt-4 text-xl font-semibold">
+            Carregando questões... aguarde
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (questions.length === 0) return <p className="text-center text-white">Sem perguntas disponíveis.</p>;
 
@@ -100,9 +156,11 @@ export default function QuizPage({ params }: { params: { id: string } }) {
           </p>
           <div className="flex flex-col items-center gap-3 w-full max-w-md">
             {questions[currentQuestion].options.map((option) => (
-              <button
+              <motion.button
                 key={option.id}
                 onClick={() => handleAnswer(option.id, option.isCorrect)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 className={`w-full py-2 px-4 rounded-lg shadow-md transition-all duration-300 ${
                   selectedOption === option.id
                     ? option.isCorrect
@@ -113,24 +171,44 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                 disabled={selectedOption !== null}
               >
                 {option.text}
-              </button>
+              </motion.button>
             ))}
           </div>
           {feedbackMessage && (
-            <p className="mt-6 text-lg font-semibold text-center text-yellow-300">{feedbackMessage}</p>
+            <motion.p
+              className="mt-6 text-lg font-semibold text-center text-yellow-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {feedbackMessage}
+            </motion.p>
           )}
           {showCorrectAnswer && (
-            <p className="text-lg font-semibold text-center text-green-300 mt-2">
+            <motion.p
+              className="text-lg font-semibold text-center text-green-300 mt-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {showCorrectAnswer}
-            </p>
+            </motion.p>
           )}
-          <button
-            onClick={handleNextQuestion}
-            className="mt-6 py-2 px-6 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg shadow-lg transition-all duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
-            disabled={selectedOption === null}
-          >
-            Próxima Pergunta
-          </button>
+<div className="flex flex-col items-center gap-4 mt-6">
+  <button
+    onClick={handleNextQuestion}
+    className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg shadow-lg transition-all duration-200 disabled:bg-gray-500"
+    disabled={selectedOption === null}
+  >
+    Próxima Pergunta
+  </button>
+  <button
+    onClick={() => router.push('/dashboard')}
+    className="py-1 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg shadow-md transition-all duration-200 text-sm"
+  >
+    Voltar
+  </button>
+</div>
         </>
       ) : (
         <div className="text-center">
@@ -156,12 +234,6 @@ export default function QuizPage({ params }: { params: { id: string } }) {
           </div>
         </div>
       )}
-      <button
-        onClick={() => router.push('/dashboard')} // Ajuste o caminho conforme necessário
-        className="mt-8 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200"
-      >
-        Voltar
-      </button>
     </div>
   );
 }

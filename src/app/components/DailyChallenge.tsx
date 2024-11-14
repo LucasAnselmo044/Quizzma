@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 type Option = {
   id: number;
@@ -9,28 +10,20 @@ type Option = {
 };
 
 export default function DailyChallenge() {
-  const [question, setQuestion] = useState<string>('');
-  const [options, setOptions] = useState<Option[]>([]);
+  const [question, setQuestion] = useState<string>(
+    "Qual é a porcentagem atual de mulheres que ocupam cargos de liderança em grandes empresas no Brasil, e como essa estatística reflete a questão da igualdade de gênero no mercado de trabalho?"
+  );
+  const [options, setOptions] = useState<Option[]>([
+    { id: 1, text: "20%", isCorrect: false },
+    { id: 2, text: "35%", isCorrect: true },
+    { id: 3, text: "50%", isCorrect: false },
+    { id: 4, text: "60%", isCorrect: false },
+  ]);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [showCorrectAnswer, setShowCorrectAnswer] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState('bg-blue-900');
-
-  // Busca a questão do dia e as opções da API
-  useEffect(() => {
-    const fetchDailyChallenge = async () => {
-      try {
-        const response = await fetch('/api/daily-challenge');
-        const data = await response.json();
-        setQuestion(data.question);
-        setOptions(data.options);
-      } catch (error) {
-        console.error("Erro ao buscar o desafio diário:", error);
-      }
-    };
-
-    fetchDailyChallenge();
-  }, []);
+  const [correctAnswerCount, setCorrectAnswerCount] = useState(0); // Contador de acertos futuros
 
   function handleAnswer(optionId: number, isCorrect: boolean) {
     setSelectedOption(optionId);
@@ -38,32 +31,37 @@ export default function DailyChallenge() {
     if (isCorrect) {
       setFeedbackMessage('Parabéns, resposta correta!');
       setBackgroundColor('bg-green-700');
-      setShowCorrectAnswer(null); // Não mostra resposta correta ao acertar
+      setShowCorrectAnswer(null);
+      setCorrectAnswerCount(correctAnswerCount + 1); // Incrementa o contador
     } else {
       setFeedbackMessage('Resposta incorreta! A resposta correta é:');
       setShowCorrectAnswer(options.find((option) => option.isCorrect)?.text || '');
       setBackgroundColor('bg-red-700');
     }
 
-    setTimeout(() => setBackgroundColor('bg-blue-900'), 1500); // Volta ao fundo original após 1,5s
+    setTimeout(() => setBackgroundColor('bg-blue-900'), 1500);
   }
 
   return (
-    <div className={`flex flex-col items-center justify-center min-h-screen ${backgroundColor} transition-colors duration-700 text-white p-6`}>
-      <h1 className="text-3xl font-bold mb-6 text-center">Desafio do Dia</h1>
-      <p className="text-xl mb-4 text-center bg-black/50 p-4 rounded-lg shadow-md">{question}</p>
-      <div className="flex flex-col items-center gap-3 w-full max-w-md">
+    <motion.div
+      className={`flex flex-col items-center justify-center min-h-[300px] sm:min-h-[400px] w-full max-w-md ${backgroundColor} transition-colors duration-700 text-white p-6 rounded-lg shadow-md`}
+      initial={{ backgroundColor: 'transparent' }}
+      animate={{ backgroundColor }}
+      transition={{ duration: 1, ease: 'easeInOut' }}
+    >
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">Desafio do Dia</h1>
+      <p className="text-lg sm:text-xl mb-4 text-center bg-black/50 p-4 rounded-lg shadow-md">{question}</p>
+      <div className="flex flex-col items-center gap-3 w-full">
         {options.map((option) => (
           <button
             key={option.id}
             onClick={() => handleAnswer(option.id, option.isCorrect)}
-            className={`w-full py-2 px-4 rounded-lg shadow-md transition-all duration-300 ${
-              selectedOption === option.id
-                ? option.isCorrect
-                  ? 'bg-green-500 text-white'
-                  : 'bg-red-500 text-white'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
+            className={`w-full py-2 px-4 rounded-lg shadow-md transition-all duration-300 ${selectedOption === option.id
+              ? option.isCorrect
+                ? 'bg-green-500 text-white'
+                : 'bg-red-500 text-white'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
             disabled={selectedOption !== null}
           >
             {option.text}
@@ -78,6 +76,11 @@ export default function DailyChallenge() {
           {showCorrectAnswer}
         </p>
       )}
-    </div>
+      {selectedOption !== null && (
+        <p className="mt-6 text-lg font-semibold text-center text-green-300">
+          {correctAnswerCount} jogadores já acertaram!
+        </p>
+      )}
+    </motion.div>
   );
 }
