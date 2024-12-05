@@ -52,13 +52,6 @@ export default function MobileNav() {
         {/* Links de navegação */}
         <div className="flex flex-col items-center gap-4">
           <Link
-            href="/history"
-            className="text-lg text-white hover:text-gray-300"
-            onClick={toggleMenu}
-          >
-            Histórico
-          </Link>
-          <Link
             href="/profile"
             className="text-lg text-white hover:text-gray-300"
             onClick={toggleMenu}

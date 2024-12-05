@@ -24,9 +24,6 @@ export default function NavBar() {
 
       {/* Links de navegação */}
       <div className="flex flex-col gap-4">
-        <Link href="/history" className="text-lg hover:text-gray-300">
-          Histórico
-        </Link>
         <Link href="/profile" className="text-lg hover:text-gray-300">
           Perfil
         </Link>
